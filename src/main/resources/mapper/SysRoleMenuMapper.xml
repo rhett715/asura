@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.asura.admin.mapper.SysRoleMenuMapper">
+    <resultMap id="SysRoleMenuResult" type="com.asura.admin.entity.SysRoleMenu">
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="menu_id" jdbcType="BIGINT" property="menuId"/>
+    </resultMap>
+
+    <insert id="insertBatchRoleMenu">
+        insert into sys_role_menu(role_id, menu_id) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.roleId},#{item.menuId})
+        </foreach>
+    </insert>
+</mapper>

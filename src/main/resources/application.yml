@@ -1,0 +1,118 @@
+server:
+  port: 26430
+
+  undertow:
+    max-http-post-size: -1
+    threads:
+      io: 16
+      worker: 256
+
+
+spring:
+  application:
+    name: @project.name@
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+
+  quartz:
+    scheduler-name: AsuraScheduler
+    startup-delay: 1s
+    overwrite-existing-jobs: true
+    auto-startup: true
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: AsuraScheduler
+            instanceId: AUTO
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 20
+            threadPriority: 5
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            isClustered: true
+            clusterCheckinInterval: 15000
+            txIsolationLevelSerializable: true
+            misfireThreshold: 60000
+            tablePrefix: QRTZ_
+
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+
+
+  devtools:
+    restart:
+      enabled: true
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
+asura:
+  name: ${spring.application.name}
+  version: @project.version@
+  copyrightYear: 2021
+
+
+token:
+  secret: abcdefghijklmnopqrstuvwxyz
+  expireTime: 30
+
+
+repeat-submit:
+  intervalTime: 1000
+
+
+
+swagger:
+  enabled: true
+  title: '标题：${asura.name}权限管理系统_接口文档'
+  description: '描述：Spring Boot框架前后端分离后端API接口文档描述'
+  version: '版本号：${asura.version}'
+  contact:
+    name: Rhett
+    email: zrui312715@gmail.com
+    url: https://github.com/rhett715
+
+
+# 验证码配置
+captcha:
+  # 验证码类型 math 数组计算 char 字符验证
+  type: char
+  # line 线段干扰 circle 圆圈干扰 shear 扭曲干扰
+  category: circle
+  # 数字验证码位数
+  numberLength: 1
+  # 字符验证码长度
+  charLength: 4
+
+
+xss:
+  enabled: true
+  excludes: /system/notice
+  urlPatterns: /system/*,/monitor/*,/tool/*
+
+
+thread-pool:
+  enabled: false
+  corePoolSize: 8
+  maxPoolSize: 16
+  queueCapacity: 128
+  keepAliveSeconds: 300
+  rejectedExecutionHandler: CallerRunsPolicy
